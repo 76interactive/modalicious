@@ -2,7 +2,7 @@
  * modalicious
  *
  * @author Sjors Snoeren
- * @version 0.1
+ * @version 0.1.1
  */
 ;(function($) {
 
@@ -43,21 +43,8 @@
       $(element).on('click', function(e) {
         e.preventDefault();
 
-        var $wrapper = $('.modalicious--wrapper');
         var href = $(this).attr('href');
-
-        $wrapper.load(href, function(response) {
-          $wrapper.show();
-
-          _this.setScrollEnabled(false);
-          _this.bindModalEvents();
-
-          if (_this.settings.shouldPushHistory) {
-            history.pushState({}, '', href);
-          }
-
-          $(document).trigger('modalicious_load');
-        });
+        _this.presentModal(href);
       });
     };
 
@@ -67,13 +54,36 @@
       $('.modalicious--close').on('click', function(e) {
         e.preventDefault();
 
-        _this.clearWrapperPlaceholder();
-        _this.setScrollEnabled(true);
+        _this.dismissModal();
+      });
+    };
+
+    this.presentModal = function(href) {
+      var $wrapper = $('.modalicious--wrapper');
+
+      $wrapper.load(href, function(response) {
+        $wrapper.show();
+
+        _this.setScrollEnabled(false);
+        _this.bindModalEvents();
 
         if (_this.settings.shouldPushHistory) {
-          history.pushState({}, '', _this.settings.historyBaseURL);
+          history.pushState({}, '', href);
         }
+
+        $(document).trigger('modalicious_load');
       });
+    };
+
+    this.dismissModal = function() {
+      this.clearWrapperPlaceholder();
+      this.setScrollEnabled(true);
+
+      if (this.settings.shouldPushHistory) {
+        history.pushState({}, '', this.settings.historyBaseURL);
+      }
+
+      $(document).trigger('modalicious_unload');
     };
 
     this.insertWrapperPlaceholder = function() {
@@ -105,9 +115,3 @@
   }
 
 })(jQuery);
-
-function scrollHandler() { }
-
-$(window).bind('scroll', scrollHandler);
-$(window).unbind('scroll', scrollHandler);
-
