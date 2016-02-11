@@ -59,6 +59,7 @@
     };
 
     this.presentModal = function(href) {
+      var _this = this;
       var $wrapper = $('.modalicious--wrapper');
 
       $wrapper.load(href, function(response) {
@@ -87,7 +88,7 @@
     };
 
     this.insertWrapperPlaceholder = function() {
-      $('body').append('<div class="modalicious--wrapper" style="width: 100%; position: fixed; top: 0; left: 0; bottom: 0; z-index: 999;"></div>');
+      $('body').append('<div class="modalicious--wrapper" style="width: 100%; position: fixed; overflow: auto; top: 0; left: 0; bottom: 0; z-index: 999;"></div>');
       
       var $wrapper = $('.modalicious--wrapper');
       $wrapper.css('background-color', this.settings.backgroundColor);
