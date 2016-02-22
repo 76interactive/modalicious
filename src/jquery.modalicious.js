@@ -35,12 +35,13 @@
        * Enable override on the built-in back and forward functionality
        * of a browser
        */
-      usesNativeBackAndForward: true
+      usesNativeBackAndForward: true,
 
       /**
        * Callback after opening
        */
       afterPresentModal: null
+      
     };
 
     this.init = function() {
